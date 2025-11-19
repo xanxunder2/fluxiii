@@ -4,6 +4,9 @@ import axios from "axios";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// ⚡ Replace this with your actual RapidAPI key
+const RAPIDAPI_KEY = "a587568823msh5624ff7fb927de6p1e06afjsnb003caf5b194";
+
 // 1️⃣ Quick generate
 app.get("/quick", async (req, res) => {
   const { prompt, style_id, size } = req.query;
@@ -14,6 +17,7 @@ app.get("/quick", async (req, res) => {
     method: "POST",
     url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
     headers: {
+      "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
       "Content-Type": "application/json",
     },
@@ -38,6 +42,7 @@ app.get("/ghibli", async (req, res) => {
     method: "POST",
     url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/ghibli/generateghibhliimage.php",
     headers: {
+      "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
       "Content-Type": "application/json",
     },
@@ -62,6 +67,7 @@ app.get("/quick2", async (req, res) => {
     method: "POST",
     url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
     headers: {
+      "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
       "Content-Type": "application/json",
     },
@@ -86,6 +92,7 @@ app.get("/flux", async (req, res) => {
     method: "POST",
     url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/fluximagegenerate/generateimage.php",
     headers: {
+      "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
       "Content-Type": "application/x-www-form-urlencoded",
     },
@@ -110,6 +117,7 @@ app.get("/quick3", async (req, res) => {
     method: "POST",
     url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
     headers: {
+      "x-rapidapi-key": RAPIDAPI_KEY,
       "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
       "Content-Type": "application/json",
     },
