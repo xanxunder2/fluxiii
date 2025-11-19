@@ -1,11 +1,12 @@
 const express = require("express");
 const axios = require("axios");
 
-
-
 const app = express();
+const PORT = process.env.PORT || 3000;
+
+// ⚡ Directly put your RapidAPI key here
 const RAPIDAPI_KEY = "a587568823msh5624ff7fb927de6p1e06afjsnb003caf5b194";
-const PORT = 3000;
+
 // Helper to validate prompt
 function requirePrompt(req, res) {
   if (!req.query.prompt) {
@@ -20,20 +21,22 @@ app.get("/quick", async (req, res) => {
   if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
 
-  const options = {
-    method: "POST",
-    url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
-    headers: {
-      "x-rapidapi-key": RAPIDAPI_KEY,
-      "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
-      "Content-Type": "application/json",
-    },
-    data: { prompt, style_id, size },
-  };
-
   try {
-    const response = await axios.request(options);
-    res.json(response.data);
+    const response = await axios.post(
+      "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
+      { prompt, style_id, size },
+      {
+        headers: {
+          "x-rapidapi-key": RAPIDAPI_KEY,
+          "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
+          "Content-Type": "application/json",
+        },
+        responseType: "arraybuffer", // direct image binary
+      }
+    );
+
+    res.set("Content-Type", "image/png");
+    res.send(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -46,19 +49,19 @@ app.get("/ghibli", async (req, res) => {
 
   if (!refImage) return res.status(400).json({ error: "refImage is required" });
 
-  const options = {
-    method: "POST",
-    url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/ghibli/generateghibhliimage.php",
-    headers: {
-      "x-rapidapi-key": RAPIDAPI_KEY,
-      "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
-      "Content-Type": "application/json",
-    },
-    data: { prompt, size, refImage, refWeight },
-  };
-
   try {
-    const response = await axios.request(options);
+    const response = await axios.post(
+      "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/ghibli/generateghibhliimage.php",
+      { prompt, size, refImage, refWeight },
+      {
+        headers: {
+          "x-rapidapi-key": RAPIDAPI_KEY,
+          "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -70,45 +73,47 @@ app.get("/quick2", async (req, res) => {
   if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
 
-  const options = {
-    method: "POST",
-    url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
-    headers: {
-      "x-rapidapi-key": RAPIDAPI_KEY,
-      "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
-      "Content-Type": "application/json",
-    },
-    data: { prompt, style_id, size },
-  };
-
   try {
-    const response = await axios.request(options);
+    const response = await axios.post(
+      "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
+      { prompt, style_id, size },
+      {
+        headers: {
+          "x-rapidapi-key": RAPIDAPI_KEY,
+          "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 });
 
-// 4️⃣ /flux
+// 4️⃣ /flux (direct image)
 app.get("/flux", async (req, res) => {
   if (!requirePrompt(req, res)) return;
 
   const encodedParams = new URLSearchParams(req.query);
 
-  const options = {
-    method: "POST",
-    url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/fluximagegenerate/generateimage.php",
-    headers: {
-      "x-rapidapi-key": RAPIDAPI_KEY,
-      "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    data: encodedParams,
-  };
-
   try {
-    const response = await axios.request(options);
-    res.json(response.data);
+    const response = await axios.post(
+      "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/fluximagegenerate/generateimage.php",
+      encodedParams,
+      {
+        headers: {
+          "x-rapidapi-key": RAPIDAPI_KEY,
+          "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        responseType: "arraybuffer", // direct image binary
+      }
+    );
+
+    res.set("Content-Type", "image/png");
+    res.send(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -119,19 +124,19 @@ app.get("/quick3", async (req, res) => {
   if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
 
-  const options = {
-    method: "POST",
-    url: "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
-    headers: {
-      "x-rapidapi-key": RAPIDAPI_KEY,
-      "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
-      "Content-Type": "application/json",
-    },
-    data: { prompt, style_id, size },
-  };
-
   try {
-    const response = await axios.request(options);
+    const response = await axios.post(
+      "https://ai-text-to-image-generator-flux-free-api.p.rapidapi.com/aaaaaaaaaaaaaaaaaiimagegenerator/quick.php",
+      { prompt, style_id, size },
+      {
+        headers: {
+          "x-rapidapi-key": RAPIDAPI_KEY,
+          "x-rapidapi-host": "ai-text-to-image-generator-flux-free-api.p.rapidapi.com",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     res.json(response.data);
   } catch (error) {
     res.status(500).json({ error: error.message });
