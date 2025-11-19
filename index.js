@@ -4,7 +4,7 @@ const axios = require("axios");
 
 
 const app = express();
-const RAPIDAPI_KEY = "YOUR_KEY_HERE";
+const RAPIDAPI_KEY = "a587568823msh5624ff7fb927de6p1e06afjsnb003caf5b194";
 const PORT = 3000;
 // Helper to validate prompt
 function requirePrompt(req, res) {
