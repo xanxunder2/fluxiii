@@ -1,17 +1,26 @@
 import express from "express";
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
 
-// ⚡ Replace this with your actual RapidAPI key
-const RAPIDAPI_KEY = "a587568823msh5624ff7fb927de6p1e06afjsnb003caf5b194";
+// Helper to validate prompt
+function requirePrompt(req, res) {
+  if (!req.query.prompt) {
+    res.status(400).json({ error: "prompt is required" });
+    return false;
+  }
+  return true;
+}
 
-// 1️⃣ Quick generate
+// 1️⃣ /quick
 app.get("/quick", async (req, res) => {
+  if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
-
-  if (!prompt) return res.status(400).json({ error: "prompt is required" });
 
   const options = {
     method: "POST",
@@ -32,11 +41,12 @@ app.get("/quick", async (req, res) => {
   }
 });
 
-// 2️⃣ Ghibli generate
+// 2️⃣ /ghibli
 app.get("/ghibli", async (req, res) => {
+  if (!requirePrompt(req, res)) return;
   const { prompt, size, refImage, refWeight } = req.query;
 
-  if (!prompt) return res.status(400).json({ error: "prompt is required" });
+  if (!refImage) return res.status(400).json({ error: "refImage is required" });
 
   const options = {
     method: "POST",
@@ -57,11 +67,10 @@ app.get("/ghibli", async (req, res) => {
   }
 });
 
-// 3️⃣ Quick duplicate
+// 3️⃣ /quick2
 app.get("/quick2", async (req, res) => {
+  if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
-
-  if (!prompt) return res.status(400).json({ error: "prompt is required" });
 
   const options = {
     method: "POST",
@@ -82,9 +91,9 @@ app.get("/quick2", async (req, res) => {
   }
 });
 
-// 4️⃣ Flux generate
+// 4️⃣ /flux
 app.get("/flux", async (req, res) => {
-  if (!req.query.prompt) return res.status(400).json({ error: "prompt is required" });
+  if (!requirePrompt(req, res)) return;
 
   const encodedParams = new URLSearchParams(req.query);
 
@@ -107,11 +116,10 @@ app.get("/flux", async (req, res) => {
   }
 });
 
-// 5️⃣ Quick third
+// 5️⃣ /quick3
 app.get("/quick3", async (req, res) => {
+  if (!requirePrompt(req, res)) return;
   const { prompt, style_id, size } = req.query;
-
-  if (!prompt) return res.status(400).json({ error: "prompt is required" });
 
   const options = {
     method: "POST",
