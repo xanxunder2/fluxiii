@@ -1,13 +1,11 @@
 const express = require("express");
 const axios = require("axios");
-require("dotenv").config();
 
-dotenv.config();
+
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY;
-
+const RAPIDAPI_KEY = "YOUR_KEY_HERE";
+const PORT = 3000;
 // Helper to validate prompt
 function requirePrompt(req, res) {
   if (!req.query.prompt) {
